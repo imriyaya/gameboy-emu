@@ -249,10 +249,6 @@ func (cpu *CPU) DEC8(destination *uint8) {
 	cpu.registers.SetHalfCarry(*destination&0x0F == 0)
 }
 
-func (cpu *CPU) LD8(destination *uint8, source uint8) {
-	*destination = source
-}
-
 func (cpu *CPU) ADD16(destination *uint16, source uint16) {
 	total := uint32(source) + uint32(*destination)
 	*destination = uint16(total)
@@ -292,4 +288,93 @@ func (cpu *CPU) SWAP(destination *uint8) {
 	cpu.registers.SetSubtract(false)
 	cpu.registers.SetHalfCarry(false)
 	cpu.registers.SetCarry(false)
+}
+
+func (cpu *CPU) RL(destination *uint8) {
+	newCarry := *destination >> 7
+	oldCarry := uint8(0)
+	if cpu.registers.GetCarry() {
+		oldCarry = uint8(1)
+	}
+	*destination = (*destination<<1)&0xFF | oldCarry
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(newCarry == 1)
+}
+
+func (cpu *CPU) RLC(destination *uint8) {
+	carry := *destination >> 7
+	*destination = (*destination<<1)&0xFF | carry
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(carry == 1)
+}
+
+func (cpu *CPU) RR(destination *uint8) {
+	newCarry := *destination & 1
+	oldCarry := uint8(0)
+	if cpu.registers.GetCarry() {
+		oldCarry = uint8(1)
+	}
+	*destination = (*destination >> 1) | (oldCarry << 7)
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(newCarry == 1)
+}
+
+func (cpu *CPU) RRC(destination *uint8) {
+	carry := *destination & 1
+	*destination = (*destination >> 1) | (carry << 7)
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(carry == 1)
+}
+
+func (cpu *CPU) SLA(destination *uint8) {
+	carry := *destination >> 7
+	*destination = *destination << 1 & 0xFF
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(carry == 1)
+}
+
+func (cpu *CPU) SRA(destination *uint8) {
+	*destination = (*destination & 128) | (*destination >> 1)
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(*destination&1 == 1)
+}
+
+func (cpu *CPU) SRL(destination *uint8) {
+	carry := *destination & 1
+	*destination = *destination >> 1
+
+	cpu.registers.SetZero(*destination == 0)
+	cpu.registers.SetSubtract(false)
+	cpu.registers.SetHalfCarry(false)
+	cpu.registers.SetCarry(carry == 1)
+}
+
+func (cpu *CPU) LD8(destination *uint8, source uint8) {
+	*destination = source
+}
+
+func (cpu *CPU) LD16(destination *uint16, source uint16) {
+	*destination = source
+}
+
+func (cpu *CPU) LDH8(destination *uint8, source uint8) {
+
 }
