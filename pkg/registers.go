@@ -1,4 +1,4 @@
-package cpu
+package pkg
 
 type Registers struct {
 	A  uint8
@@ -9,8 +9,15 @@ type Registers struct {
 	F  uint8
 	H  uint8
 	L  uint8
-	SP uint16
+	S  uint8
+	P  uint8
 	PC uint16
+}
+
+func NewRegisters() Registers {
+	registers := Registers{}
+	registers.A = 0x11
+	return registers
 }
 
 func (r *Registers) GetAF() uint16 {
@@ -47,6 +54,15 @@ func (r *Registers) GetHL() uint16 {
 func (r *Registers) SetHL(value uint16) {
 	r.H = uint8((value & 0xFF00) >> 8)
 	r.L = uint8(value & 0xFF)
+}
+
+func (r *Registers) GetSP() uint16 {
+	return uint16(r.S)<<8 | uint16(r.P)
+}
+
+func (r *Registers) SetSP(value uint16) {
+	r.S = uint8((value & 0xFF00) >> 8)
+	r.P = uint8(value & 0xFF)
 }
 
 const ZeroFlagBytePosition uint8 = 7

@@ -1,4 +1,4 @@
-package memory
+package pkg
 
 type Memory struct {
 	memory [0xFFFF]uint8

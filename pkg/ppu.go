@@ -1,4 +1,4 @@
-package graphics
+package pkg
 
 const VramBegin uint16 = 0x8000
 const VramEnd uint16 = 0x9FFF
@@ -20,6 +20,10 @@ func EmptyTile() *Tile {
 	return tile
 }
 
-type GPU struct {
+type PPU struct {
 	Vram [VramSize]uint8
+}
+
+func (gameboy *Gameboy) readTile(address) Tile {
+
 }
