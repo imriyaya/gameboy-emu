@@ -18,11 +18,3 @@ var OpcodeCycles = []int{
 	3, 3, 2, 0, 0, 4, 2, 4, 4, 1, 4, 0, 0, 0, 2, 4, // e
 	3, 3, 2, 1, 0, 4, 2, 4, 3, 2, 4, 1, 0, 0, 2, 4, // f
 } //0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f
-
-var Instructions = [0x100]func(*CPU){
-	// ADDs
-	0x80: func(cpu *CPU) {
-		// ADD A,B
-
-	},
-}

@@ -1,7 +1,8 @@
 package pkg
 
 type Memory struct {
-	memory [0xFFFF]uint8
+	gameboy *Gameboy
+	memory  [0xFFFF]uint8
 }
 
 func New() *Memory {
